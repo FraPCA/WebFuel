@@ -25,13 +25,13 @@ def status():
 def updateStatus():
     if(request.method == 'GET'):
         status = Status.update()
-        return str(status)
+        return status
 
 @sock.on('updateRequest')
 def updateSock(data):
     status = Status.update()
     resp = {'test': 'Prova'}
-    sock.emit('update', str(status))
+    sock.emit('update', status)
     print("Emesso update")
 @sock.on('connect')
 def hello():
