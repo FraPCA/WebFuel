@@ -15,22 +15,13 @@ if __name__ == '__main__':
 def fuel():
     return "<p>Fuel!</p>"
 
-
 @app.route("/status")
 def status():
-    status = Status.update()
-    return render_template('status.html', status = status)
-
-@app.route("/updateStatus", methods = ['GET'])
-def updateStatus():
-    if(request.method == 'GET'):
-        status = Status.update()
-        return status
+    return render_template('status.html')
 
 @sock.on('updateRequest')
 def updateSock(data):
     status = Status.update()
-    resp = {'test': 'Prova'}
     sock.emit('update', status)
     print("Emesso update")
 @sock.on('connect')
