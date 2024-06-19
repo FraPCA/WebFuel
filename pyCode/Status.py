@@ -14,8 +14,6 @@ def update():
 def clean(status):
     status["date"] = status.get("date").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
     del status['myState']
-    del status['syncSourceHost']
-    del status['syncSourceId']
     del status.get('optimes').get('lastCommittedOpTime')["t"]
     status.get("optimes")["lastCommittedOpTime"] = status.get("optimes").get("lastCommittedOpTime")["ts"].as_datetime().strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
 
