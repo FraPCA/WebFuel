@@ -108,16 +108,33 @@
             var nodesNumber = Object.keys(data.members).length
             console.log(data.members) //Fa uno alla volta, altrimenti se perde connessione con i nodi crasha.
             $("#nodeAName")[0].innerHTML = data.members[0].name
-            $("#nodeA")[0].src = "{{ url_for('static', filename='node.png') }}"
-            if(nodesNumber > 1)
+            $("#nodeBName")[0].innerHTML = data.members[1].name  
+            $("#nodeCName")[0].innerHTML = data.members[2].name
+
+            if(data.members[0].health == 1)
             {
-                $("#nodeBName")[0].innerHTML = data.members[1].name  
-                $("#nodeB")[0].src = "{{ url_for('static', filename='node.png') }}"
-              
+                $("#nodeA")[0].src = "{{ url_for('static', filename='node.png') }}"
             }
-            if(nodesNumber > 2)
+            else 
             {
-                $("#nodeCName")[0].innerHTML = data.members[2].name
+                $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+
+            }
+            
+            if(data.members[1].health == 1)
+            {
+                $("#nodeB")[0].src = "{{ url_for('static', filename='node.png') }}"
+            }
+            else
+            {
+                $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+            }
+            if(data.members[2].health == 1)
+            {
+                $("#nodeC")[0].src = "{{ url_for('static', filename='node.png') }}"
+            }
+            else
+            {
                 $("#nodeC")[0].src = "{{ url_for('static', filename='node.png') }}"
             }
         }
