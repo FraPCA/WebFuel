@@ -1,16 +1,51 @@
+from pymongo import errors
 from pyCode.setupConnection import conn
 from datetime import datetime
 
 db = conn['admin']
 
+
+def cleanFail(error):
+    errorList = error.args[0].split(',')
+    print(errorList)
+    if('"Primary()"' in errorList[0]):    #Almeno un nodo attivo, cambia il messaggio di errore.
+        pos1 = 7
+        pos2 = 10
+        pos3 = 15
+        
+    else:
+        pos1 = 0
+        pos2 = 2
+        pos3 = 4
+        
+    if("WinError 10061" in errorList[pos1]):
+        nodeA = "offline"
+    else:
+        nodeA = "online"
+
+    if("WinError 10061" in errorList[pos2]):
+        nodeB = "offline"
+    else:
+        nodeB = "online"
+    if("WinError 10061" in errorList[pos3]):
+        nodeC = "offline"
+    else:
+        nodeC = "online"    
+    status = {"nodeA": nodeA, "nodeB": nodeB, "nodeC": nodeC}
+    return status
+    
+
 def update():
     #while True:
     #    rs_status = db.command({'replSetGetStatus': 1})
     #    print(rs_status)
-    rs_status = db.command({'replSetGetStatus': 1})
-    clean(rs_status)
-    return rs_status
-
+    try:
+        rs_status = db.command({'replSetGetStatus': 1})
+        clean(rs_status)
+        return rs_status
+    except errors.ServerSelectionTimeoutError as error:
+        return cleanFail(error)
+        
 def clean(status):
     status["date"] = status.get("date").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
     del status['myState']

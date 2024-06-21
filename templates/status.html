@@ -103,58 +103,88 @@
 
         function updateVisuals(data)
         {
-            var nodesNumber = Object.keys(data.members).length
-            console.log(data.members) //Fa uno alla volta, altrimenti se perde connessione con i nodi crasha.
-            $("#nodeAName")[0].innerHTML = data.members[0].name
-            $("#nodeBName")[0].innerHTML = data.members[1].name  
-            $("#nodeCName")[0].innerHTML = data.members[2].name
-
-            if(data.members[0].health == 1)
+            if(data.hasOwnProperty("nodeA"))    //status di errore
             {
-                if(data.members[0].syncSourceHost == "")
+                if(data.nodeA == "offline")
                 {
-                    $("#nodeA")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                    $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
                 }
                 else
                 {
                     $("#nodeA")[0].src = "{{ url_for('static', filename='node.png') }}" 
                 }
-            }
-            else 
-            {
-                $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
-            }
-            
-            if(data.members[1].health == 1)
-            {
-                if(data.members[1].syncSourceHost == "")
+                if(data.nodeB == "offline")
                 {
-                    $("#nodeB")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                    $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
                 }
                 else
                 {
                     $("#nodeB")[0].src = "{{ url_for('static', filename='node.png') }}" 
                 }
-            }
-            else 
-            {
-                $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
-            }
-            if(data.members[2].health == 1)
-            {
-                if(data.members[2].syncSourceHost == "")
+                if(data.nodeC == "offline")
                 {
-                    $("#nodeC")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                    $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
                 }
                 else
                 {
                     $("#nodeC")[0].src = "{{ url_for('static', filename='node.png') }}" 
                 }
             }
-            else 
-            {
-                $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
-            }
+            else
+            {                                   //status regolare
+                var nodesNumber = Object.keys(data.members).length
+                console.log(data.members) //Fa uno alla volta, altrimenti se perde connessione con i nodi crasha.
+                $("#nodeAName")[0].innerHTML = data.members[0].name
+                $("#nodeBName")[0].innerHTML = data.members[1].name  
+                $("#nodeCName")[0].innerHTML = data.members[2].name
+
+                if(data.members[0].health == 1)
+                {
+                    if(data.members[0].syncSourceHost == "")
+                    {
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                    }
+                    else
+                    {
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                    }
+                }
+                else 
+                {
+                    $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                }
+                
+                if(data.members[1].health == 1)
+                {
+                    if(data.members[1].syncSourceHost == "")
+                    {
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                    }
+                    else
+                    {
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                    }
+                }
+                else 
+                {
+                    $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                }
+                if(data.members[2].health == 1)
+                {
+                    if(data.members[2].syncSourceHost == "")
+                    {
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                    }
+                    else
+                    {
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                    }
+                }
+                else 
+                {
+                    $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                }
+                }
         }
 
         $(document).ready(function(){
