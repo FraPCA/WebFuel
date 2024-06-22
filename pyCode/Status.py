@@ -9,28 +9,41 @@ def cleanFail(error):
     errorList = error.args[0].split(',')
     print(errorList)
     if('"Primary()"' in errorList[0]):    #Almeno un nodo attivo, cambia il messaggio di errore.
-        pos1 = 7
+        pos1 = 5
         pos2 = 10
         pos3 = 15
+        if("RSSecondary" not in errorList[pos1]):
+            nodeA = "offline"
+        else:
+            nodeA = "online"
+
+        if("RSSecondary" not in errorList[pos2]):
+            nodeB = "offline"
+        else:
+            nodeB = "online"
+        if("RSSecondary" not in errorList[pos3]):
+            nodeC = "offline"
+        else:
+            nodeC = "online"    
         
     else:
         pos1 = 0
         pos2 = 2
         pos3 = 4
-        
-    if("WinError 10061" in errorList[pos1]):
-        nodeA = "offline"
-    else:
-        nodeA = "online"
+        if("WinError 10061" in errorList[pos1]):
+            nodeA = "offline"
+        else:
+            nodeA = "online"
 
-    if("WinError 10061" in errorList[pos2]):
-        nodeB = "offline"
-    else:
-        nodeB = "online"
-    if("WinError 10061" in errorList[pos3]):
-        nodeC = "offline"
-    else:
-        nodeC = "online"    
+        if("WinError 10061" in errorList[pos2]):
+            nodeB = "offline"
+        else:
+            nodeB = "online"
+        if("WinError 10061" in errorList[pos3]):
+            nodeC = "offline"
+        else:
+            nodeC = "online"    
+    
     status = {"nodeA": nodeA, "nodeB": nodeB, "nodeC": nodeC}
     return status
     
