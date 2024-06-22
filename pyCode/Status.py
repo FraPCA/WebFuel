@@ -7,7 +7,6 @@ db = conn['admin']
 
 def cleanFail(error):
     errorList = error.args[0].split(',')
-    print(errorList)
     if('"Primary()"' in errorList[0]):    #Almeno un nodo attivo, cambia il messaggio di errore.
         pos1 = 5
         pos2 = 10
@@ -68,9 +67,6 @@ def cleanFail(error):
     
 
 def update():
-    #while True:
-    #    rs_status = db.command({'replSetGetStatus': 1})
-    #    print(rs_status)
     try:
         rs_status = db.command({'replSetGetStatus': 1})
         clean(rs_status)
@@ -113,7 +109,6 @@ def clean(status):
     if "electionParticipantMetrics" in status:
         del status.get('electionParticipantMetrics')['lastAppliedOpTimeAtElection']
         del status.get('electionParticipantMetrics')['maxAppliedOpTimeInSet']
-        del status.get('electionParticipantMetrics')['newTermStartDate']
         status.get('electionParticipantMetrics')['lastVoteDate'] = status.get('electionParticipantMetrics')['lastVoteDate'].strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
     
     for member in status['members']:
