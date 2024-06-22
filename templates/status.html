@@ -181,7 +181,15 @@
                 }
                 else 
                 {
-                    $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                    if(data.members[0].lastHeartbeatMessage == "The server is in quiesce mode and will shut down")
+                    {
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}"
+
+                    }
+                    else
+                    {
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                    }
                 }
                 
                 if(data.members[1].health == 1)
@@ -197,7 +205,15 @@
                 }
                 else 
                 {
-                    $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                    if(data.members[1].lastHeartbeatMessage == "The server is in quiesce mode and will shut down")
+                    {
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}"
+
+                    }
+                    else
+                    {
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                    }
                 }
                 if(data.members[2].health == 1)
                 {
@@ -212,9 +228,17 @@
                 }
                 else 
                 {
-                    $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                    if(data.members[2].lastHeartbeatMessage == "The server is in quiesce mode and will shut down")
+                    {
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}"
+
+                    }
+                    else
+                    {
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
+                    }
                 }
-                }
+            }
         }
 
         $(document).ready(function(){

@@ -104,7 +104,8 @@ def clean(status):
     del status.get('electionCandidateMetrics')['lastSeenOpTimeAtElection']
     del status.get('electionCandidateMetrics')['numVotesNeeded']
     status.get('electionCandidateMetrics')['newTermStartDate'] = status.get('electionCandidateMetrics')['newTermStartDate'].strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
-    status.get('electionCandidateMetrics')['wMajorityWriteAvailabilityDate'] = status.get('electionCandidateMetrics')['wMajorityWriteAvailabilityDate'].strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
+    if "wMajorityWriteAvailabilityDate" in status.get('electionCandidateMetrics'):
+        status.get('electionCandidateMetrics')['wMajorityWriteAvailabilityDate'] = status.get('electionCandidateMetrics')['wMajorityWriteAvailabilityDate'].strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
     
     if "electionParticipantMetrics" in status:
         del status.get('electionParticipantMetrics')['lastAppliedOpTimeAtElection']
