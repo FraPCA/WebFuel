@@ -27,23 +27,41 @@ def cleanFail(error):
             nodeC = "online"    
         
     else:
-        pos1 = 0
-        pos2 = 2
-        pos3 = 4
-        if("WinError 10061" in errorList[pos1]):
-            nodeA = "offline"
+        if (len(errorList) > 40): #Modo migliore per capire che uno è entrato in quiescenza
+            pos1 = 9
+            pos2 = 8
+            pos3 = 7
+            if("'ShutdownInProgress'" in errorList[pos1]):
+                nodeA = "offline"
+                nodeB = "offline"
+                nodeC = "offline"
+            if("'ShutdownInProgress'" in errorList[pos2]):
+                nodeB = "offline"
+                nodeA = "offline"
+                nodeC = "offline"
+            if("'ShutdownInProgress'" in errorList[pos3]):
+                nodeC = "offline"
+                nodeA = "offline"
+                nodeB = "offline"  
         else:
-            nodeA = "online"
+                
+            pos1 = 0
+            pos2 = 2
+            pos3 = 4
+            if("WinError 10061" or "WinError 10054" in errorList[pos1]): #Primo per spento, secondo per chiusura.
+                nodeA = "offline"
+            else:
+                nodeA = "online"
 
-        if("WinError 10061" in errorList[pos2]):
-            nodeB = "offline"
-        else:
-            nodeB = "online"
-        if("WinError 10061" in errorList[pos3]):
-            nodeC = "offline"
-        else:
-            nodeC = "online"    
-    
+            if("WinError 10061" or "WinError 10054" in errorList[pos2]):
+                nodeB = "offline"
+            else:
+                nodeB = "online"
+            if("WinError 10061" or "WinError 10054" in errorList[pos3]):
+                nodeC = "offline"
+            else:
+                nodeC = "online"    
+        
     status = {"nodeA": nodeA, "nodeB": nodeB, "nodeC": nodeC}
     return status
     
