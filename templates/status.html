@@ -105,29 +105,59 @@
         {
             if(data.hasOwnProperty("nodeA"))    //status di errore
             {
-                if(data.nodeA == "offline")
+
+                switch(data.nodeA)
                 {
-                    $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
+                    case "offline":
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
+                        break;
+                    case "online":
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                        break;
+                    case "waiting":
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='nodenoprimary.png') }}" 
+                        break;
+                    case "shutting":
+                        $("#nodeA")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}" 
+                        break;
+                    default:
+                        break;
                 }
-                else
+
+                switch(data.nodeB)
                 {
-                    $("#nodeA")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                    case "offline":
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
+                        break;
+                    case "online":
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                        break;
+                    case "waiting":
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='nodenoprimary.png') }}" 
+                        break;
+                    case "shutting":
+                        $("#nodeB")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}" 
+                        break;
+                    default:
+                        break;
                 }
-                if(data.nodeB == "offline")
+
+                switch(data.nodeC)
                 {
-                    $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
-                }
-                else
-                {
-                    $("#nodeB")[0].src = "{{ url_for('static', filename='node.png') }}" 
-                }
-                if(data.nodeC == "offline")
-                {
-                    $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
-                }
-                else
-                {
-                    $("#nodeC")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                    case "offline":
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
+                        break;
+                    case "online":
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='node.png') }}" 
+                        break;
+                    case "waiting":
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodenoprimary.png') }}" 
+                        break;
+                    case "shutting":
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}" 
+                        break;
+                    default:
+                        break;
                 }
             }
             else

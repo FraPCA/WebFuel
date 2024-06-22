@@ -15,32 +15,33 @@ def cleanFail(error):
         if("RSSecondary" not in errorList[pos1]):
             nodeA = "offline"
         else:
-            nodeA = "online"
+            nodeA = "waiting"
 
         if("RSSecondary" not in errorList[pos2]):
             nodeB = "offline"
         else:
-            nodeB = "online"
+            nodeB = "waiting"
         if("RSSecondary" not in errorList[pos3]):
             nodeC = "offline"
         else:
-            nodeC = "online"    
+            nodeC = "waiting"    
         
     else:
         if (len(errorList) > 40): #Modo migliore per capire che uno è entrato in quiescenza
-            pos1 = 9
-            pos2 = 8
-            pos3 = 7
+            
+            pos1 = 29
+            pos2 = 34
+            pos3 = 40
             if("'ShutdownInProgress'" in errorList[pos1]):
-                nodeA = "offline"
+                nodeA = "shutting"
                 nodeB = "offline"
                 nodeC = "offline"
             if("'ShutdownInProgress'" in errorList[pos2]):
-                nodeB = "offline"
+                nodeB = "shutting"
                 nodeA = "offline"
                 nodeC = "offline"
             if("'ShutdownInProgress'" in errorList[pos3]):
-                nodeC = "offline"
+                nodeC = "shutting"
                 nodeA = "offline"
                 nodeB = "offline"  
         else:
