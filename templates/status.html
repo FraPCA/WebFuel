@@ -71,15 +71,16 @@
 
                     <div class="flex flex-row mt-2">
 
-                        <div class="flex flex-col justify-end flex-wrap flex-none ml-10">
+                        <div class="flex flex-col justify-end flex-wrap flex-none ml-10 mb-3">
     
                         
-                            <p class="font-semibold mt-2 text-sm text-gray-500">Latenza rispetto al primario</p>
+                            <p class="font-semibold mt-2 text-sm text-gray-500">Latenza rispetto al primario (ms)</p>
                             <p class="font-semibold mt-2 text-sm text-gray-500">Stato di replica</p>
-                            <p class="font-semibold mt-2 text-sm text-gray-500">Uptime</p>
-                            <p class="font-semibold mt-2 text-sm text-gray-500">Ultimo messaggio</p>
+                            <p class="font-semibold mt-2 text-sm text-gray-500">Uptime (s)</p>
                             <p class="font-semibold mt-2 text-sm text-gray-500">Ultima operazione effettuata</p>
+                            <br>
                             <p class="font-semibold mt-2 text-sm text-gray-500">Ultima operazione applicata</p>
+                            <br>
                             <p class="font-semibold mt-2 text-sm text-gray-500">Ultima operazione scritta in journal</p>
         
         
@@ -97,7 +98,6 @@
                         <p id = "latenzaA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "replicaA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "uptimeA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "messA" class="mt-2 text-sm text-center text-gray-500">Stato</p>
                         <p id = "lastEffA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "lastAppA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "lastJouA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
@@ -112,7 +112,6 @@
                         <p id = "latenzaB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "replicaB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "uptimeB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "messB" class="mt-2 text-sm text-center text-gray-500">Stato</p>
                         <p id = "lastEffB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "lastAppB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "lastJouB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
@@ -127,7 +126,6 @@
                         <p id = "latenzaC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "replicaC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "uptimeC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "messC" class="mt-2 text-sm text-center text-gray-500">Stato</p>
                         <p id = "lastEffC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "lastAppC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
                         <p id = "lastJouC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
@@ -205,16 +203,18 @@
             else
             {                                   //status regolare
                 var nodesNumber = Object.keys(data.members).length
-                console.log(data.members) //Fa uno alla volta, altrimenti se perde connessione con i nodi crasha.
                 $("#nodeAName")[0].innerHTML = data.members[0].name
                 $("#nodeBName")[0].innerHTML = data.members[1].name  
                 $("#nodeCName")[0].innerHTML = data.members[2].name
+
+                var primary;
 
                 if(data.members[0].health == 1)
                 {
                     if(data.members[0].syncSourceHost == "")
                     {
                         $("#nodeA")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                        primary = "A"
                     }
                     else
                     {
@@ -226,7 +226,6 @@
                     if(data.members[0].lastHeartbeatMessage == "The server is in quiesce mode and will shut down")
                     {
                         $("#nodeA")[0].src = "{{ url_for('static', filename='nodequiescent.png') }}"
-
                     }
                     else
                     {
@@ -239,6 +238,7 @@
                     if(data.members[1].syncSourceHost == "")
                     {
                         $("#nodeB")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                        primary = "B"
                     }
                     else
                     {
@@ -261,7 +261,8 @@
                 {
                     if(data.members[2].syncSourceHost == "")
                     {
-                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}" 
+                        $("#nodeC")[0].src = "{{ url_for('static', filename='nodeprimary.png') }}"
+                        primary = "C" 
                     }
                     else
                     {
@@ -280,6 +281,54 @@
                         $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
                     }
                 }
+
+                //Informazioni nodi
+
+                if(primary != "A")
+                {
+                    $("#latenzaA")[0].innerHTML = data.members[0].latency
+                }
+                else
+                {
+                    $("#latenzaA")[0].innerHTML = "0"
+                }
+                if(primary != "B")
+                {
+                    $("#latenzaB")[0].innerHTML = data.members[1].latency
+                }
+                else
+                {
+                    $("#latenzaA")[0].innerHTML = "0"
+                }
+                if(primary != "C")
+                {
+                    $("#latenzaC")[0].innerHTML = data.members[2].latency
+                }
+                else
+                {
+                    $("#latenzaA")[0].innerHTML = "0"
+                }
+
+                $("#replicaA")[0].innerHTML = data.members[0].stateStr
+                $("#replicaB")[0].innerHTML = data.members[1].stateStr
+                $("#replicaC")[0].innerHTML = data.members[2].stateStr
+                
+                $("#uptimeA")[0].innerHTML = data.members[0].uptime
+                $("#uptimeB")[0].innerHTML = data.members[1].uptime
+                $("#uptimeC")[0].innerHTML = data.members[2].uptime
+
+                $("#lastEffA")[0].innerHTML = data.members[0].optimeDate
+                $("#lastEffB")[0].innerHTML = data.members[1].optimeDate
+                $("#lastEffC")[0].innerHTML = data.members[2].optimeDate
+
+                $("#lastAppA")[0].innerHTML = data.members[0].lastAppliedWallTime
+                $("#lastAppB")[0].innerHTML = data.members[1].lastAppliedWallTime
+                $("#lastAppC")[0].innerHTML = data.members[2].lastAppliedWallTime
+
+                $("#lastJouA")[0].innerHTML = data.members[0].lastDurableWallTime
+                $("#lastJouB")[0].innerHTML = data.members[1].lastDurableWallTime
+                $("#lastJouC")[0].innerHTML = data.members[2].lastDurableWallTime
+
             }
         }
 

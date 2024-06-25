@@ -75,7 +75,6 @@ def update():
         return cleanFail(error)
         
 def clean(status):
-    status["date"] = status.get("date").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
     del status['myState']
     del status.get('optimes').get('lastCommittedOpTime')["t"]
     status.get("optimes")["lastCommittedOpTime"] = status.get("optimes").get("lastCommittedOpTime")["ts"].as_datetime().strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
@@ -116,10 +115,14 @@ def clean(status):
        del member.get("optime")["t"]
        member["optime"] = member.get("optime")["ts"].as_datetime().strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
        member[("optimeDate")] = member.get("optimeDate").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
-       del member["lastAppliedWallTime"]
-       del member["lastDurableWallTime"]
+       member["lastAppliedWallTime"] = member.get("lastAppliedWallTime").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
+       member["lastDurableWallTime"] = member.get("lastDurableWallTime").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
+       
+       if member["state"] == 8:
+           member["stateStr"] = "DOWN" #Corregge problema con la visualizzazione dello status.
        
        if "lastHeartbeat" in member:
+           member["latency"] = int((status["date"] - member["lastHeartbeat"]).total_seconds() * 1000)
            member["lastHeartbeat"] = member.get("lastHeartbeat").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
            member["lastHeartbeatRecv"] = member.get("lastHeartbeatRecv").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
 
@@ -136,6 +139,13 @@ def clean(status):
     
     del status["$clusterTime"]
     del status["operationTime"]
+    
+    status["date"] = status.get("date").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
+
+    
+    #Parametri custom: calcolati qui per non farli calcolare al javascript della pagina.abs
+    
+    
     
     return status
     
