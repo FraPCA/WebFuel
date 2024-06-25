@@ -71,7 +71,7 @@
 
                     <div class="flex flex-row mt-2">
 
-                        <div class="flex flex-col justify-end flex-wrap flex-none ml-10 mb-3">
+                        <div id = "legendstats" class="invisible flex flex-col justify-end flex-wrap flex-none ml-10 mb-3">
     
                         
                             <p class="font-semibold mt-2 text-sm text-gray-500">Latenza rispetto al primario (ms)</p>
@@ -95,13 +95,14 @@
 
                         <img id = "nodeA" src="{{ url_for('static', filename='nodeunreachable.png') }}" class="image object-contain" alt="Node0">
                         <p id = "nodeAName" class="mt-2 text-lg text-center text-gray-500">Nodo A</p>
-                        <p id = "latenzaA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "replicaA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "uptimeA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastEffA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastAppA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastJouA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-
+                        <div id = "nodeAstats" class="hidden">
+                            <p id = "latenzaA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "replicaA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "uptimeA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastEffA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastAppA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastJouA" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                        </div>
 
                     </div>
 
@@ -109,13 +110,15 @@
 
                         <img id = "nodeB" src="{{ url_for('static', filename='nodeunreachable.png') }}" class="image object-contain" alt="Node1">
                         <p id = "nodeBName" class="mt-2 text-lg text-center text-gray-500">Nodo B</p>
-                        <p id = "latenzaB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "replicaB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "uptimeB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastEffB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastAppB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastJouB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                        <div id = "nodeBstats" class="hidden" >
+                            <p id = "latenzaB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "replicaB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "uptimeB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastEffB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastAppB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastJouB" class="mt-2 text-center text-sm text-gray-500">Stato</p>
 
+                        </div>
 
                     </div>
 
@@ -123,13 +126,16 @@
 
                         <img id = "nodeC" src="{{ url_for('static', filename='nodeunreachable.png') }}" class="image object-contain" alt="Node2">
                         <p id = "nodeCName" class="mt-2 text-lg text-center text-gray-500">Nodo C</p>
-                        <p id = "latenzaC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "replicaC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "uptimeC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastEffC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastAppC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
-                        <p id = "lastJouC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                        <div id = "nodeCstats" class="hidden">
 
+                            <p id = "latenzaC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "replicaC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "uptimeC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastEffC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastAppC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+                            <p id = "lastJouC" class="mt-2 text-center text-sm text-gray-500">Stato</p>
+
+                        </div>
 
                     </div>
 
@@ -145,7 +151,6 @@
         {
             if(data.hasOwnProperty("nodeA"))    //status di errore
             {
-
                 switch(data.nodeA)
                 {
                     case "offline":
@@ -199,6 +204,15 @@
                     default:
                         break;
                 }
+
+                if(!($("#legendstats").hasClass("invisible")))
+                {
+                    $("#legendstats").addClass("invisible") //Se prima c'era una connessione attiva, nasconde stati e leggenda.
+                    $("#nodeAstats").hide()
+                    $("#nodeBstats").hide()
+                    $("#nodeCstats").hide()
+                }
+
             }
             else
             {                                   //status regolare
@@ -328,6 +342,13 @@
                 $("#lastJouA")[0].innerHTML = data.members[0].lastDurableWallTime
                 $("#lastJouB")[0].innerHTML = data.members[1].lastDurableWallTime
                 $("#lastJouC")[0].innerHTML = data.members[2].lastDurableWallTime
+
+                $("#legendstats").removeClass("invisible")
+                $("#nodeAstats").show()
+                $("#nodeBstats").show()
+                $("#nodeCstats").show()
+
+
 
             }
         }
