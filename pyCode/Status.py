@@ -125,7 +125,8 @@ def clean(status):
            member["latency"] = int((status["date"] - member["lastHeartbeat"]).total_seconds() * 1000)
            member["lastHeartbeat"] = member.get("lastHeartbeat").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
            member["lastHeartbeatRecv"] = member.get("lastHeartbeatRecv").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
-
+       else:
+           member["latency"] = "unavailable"
        
        if "electionTime" in member:
            member["electionTime"] = member.get("electionTime").as_datetime().strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
