@@ -140,13 +140,7 @@ def clean(status):
     del status["$clusterTime"]
     del status["operationTime"]
     
-    status["date"] = status.get("date").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
-
-    
-    #Parametri custom: calcolati qui per non farli calcolare al javascript della pagina.abs
-    
-    
-    
+    status["date"] = status.get("date").strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]    
     return status
     
 
