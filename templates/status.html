@@ -145,7 +145,7 @@
 
             <div id="elections", class="hidden">
 
-                <h6 style="font-family: AppleGaramond", class="text-2xl font-medium leading-tight mt-2 ml-2">Elezioni</h6>
+                <h6 style="font-family: AppleGaramond", class="text-2xl font-medium leading-tight mt-2 ml-10">Elezioni</h6>
 
 
                         <div id="electionsmessages">
@@ -362,8 +362,104 @@
                 }
 
                 $("#replicaA")[0].innerHTML = data.members[0].stateStr
+                if(data.members[0].stateStr == "SECONDARY")
+                {
+                    if($("#replicaA").hasClass("font-semibold")) //Era primario
+                    {
+                        $("#replicaA").removeClass("font-semibold")
+                    }
+                    else
+                    {
+                        $("#replicaA").removeClass("text-gray-500") //Prima accensione
+                        $("#replicaA").addClass("text-green-600")
+                    }
+                }
+                else
+                {
+                    if(primary == "A")   //Controllo necessario perchè ci sono altri 8 stati
+                    {
+                        if(!($("#replicaA").hasClass("font-semibold"))) //Era secondario
+                        {
+                            $("#replicaA").addClass("font-semibold")
+                        }
+                        if($("#replicaA").hasClass("text-gray-500")) //Se è la prima accensione
+                        {
+                            $("#replicaA").addClass("text-green-600")
+                        }
+                    }
+                    else    //Stato normale, rimetti gray.
+                    {
+                        $("#replicaA").removeClass("text-green-600")
+                        $("#replicaA").removeClass("font-semibold")
+                        $("#replicaA").addClass("text-gray-500")
+                    }
+                }
                 $("#replicaB")[0].innerHTML = data.members[1].stateStr
+                if(data.members[1].stateStr == "SECONDARY")
+                {
+                    if($("#replicaB").hasClass("font-semibold")) //Era primario
+                    {
+                        $("#replicaB").removeClass("font-semibold")
+                    }
+                    else
+                    {
+                        $("#replicaB").removeClass("text-gray-500") //Prima accensione
+                        $("#replicaB").addClass("text-green-600")
+                    }
+                }
+                else
+                {
+                    if(primary == "B")   //Controllo necessario perchè ci sono altri 8 stati
+                    {
+                        if(!($("#replicaB").hasClass("font-semibold"))) //Era secondario
+                        {
+                            $("#replicaB").addClass("font-semibold")
+                        }
+                        if($("#replicaB").hasClass("text-gray-500")) //Se è la prima accensione
+                        {
+                            $("#replicaB").addClass("text-green-600")
+                        }
+                    }
+                    else    //Stato normale, rimetti gray.
+                    {
+                        $("#replicaB").removeClass("text-green-600")
+                        $("#replicaB").removeClass("font-semibold")
+                        $("#replicaB").addClass("text-gray-500")
+                    }
+                }
                 $("#replicaC")[0].innerHTML = data.members[2].stateStr
+                if(data.members[2].stateStr == "SECONDARY")
+                {
+                    if($("#replicaC").hasClass("font-semibold")) //Era primario
+                    {
+                        $("#replicaC").removeClass("font-semibold")
+                    }
+                    else
+                    {
+                        $("#replicaC").removeClass("text-gray-500") //Prima accensione
+                        $("#replicaC").addClass("text-green-600")
+                    }
+                }
+                else
+                {
+                    if(primary == "C")   //Controllo necessario perchè ci sono altri 8 stati
+                    {
+                        if(!($("#replicaC").hasClass("font-semibold"))) //Era secondario
+                        {
+                            $("#replicaC").addClass("font-semibold")
+                        }
+                        if($("#replicaC").hasClass("text-gray-500")) //Se è la prima accensione
+                        {
+                            $("#replicaC").addClass("text-green-600")
+                        }
+                    }
+                    else    //Stato normale, rimetti gray.
+                    {
+                        $("#replicaC").removeClass("text-green-600")
+                        $("#replicaC").removeClass("font-semibold")
+                        $("#replicaC").addClass("text-gray-500")
+                    }
+                }
                 
                 $("#uptimeA")[0].innerHTML = data.members[0].uptime
                 $("#uptimeB")[0].innerHTML = data.members[1].uptime
@@ -420,8 +516,8 @@
             $(para2).attr('id', 'electionmsg2');
 
 
-            $(para1).addClass("mt-2 ml-3 text-sm")
-            $(para2).addClass("mt-1 ml-3 text-sm")
+            $(para1).addClass("mt-2 ml-10 text-sm")
+            $(para2).addClass("mt-1 ml-10 text-sm")
 
             para1.appendChild(document.createTextNode(msg1))
             para2.appendChild(document.createTextNode(msg2))
