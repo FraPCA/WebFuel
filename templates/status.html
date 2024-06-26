@@ -140,7 +140,43 @@
                     </div>
 
                 </div>
-                
+
+            </div>
+
+            <div id="elections", class="hidden">
+
+                <h6 style="font-family: AppleGaramond", class="text-2xl font-medium leading-tight mt-2 ml-2">Elezioni</h6>
+
+
+                        <div id="electionsmessages">
+                        
+                        </div>
+
+                        <div class="flex flex-row justify-between mt-2">
+                            
+                            <div id = "legendelections" class="flex flex-col justify-end flex-wrap flex-none ml-10 mb-3">
+            
+                                
+                                <p class="font-semibold mt-2 text-sm text-gray-500">Ultima elezione</p>
+                                <p class="font-semibold mt-2 text-sm text-gray-500">Motivo ultima elezione</p>
+                                <p class="font-semibold mt-2 text-sm text-gray-500">Timeout del primario entro (ms) </p>
+                                <p class="font-semibold mt-2 text-sm text-gray-500">Operazioni che il primario recupererà</p>
+                                <p class="font-semibold mt-2 text-sm text-gray-500">Inizio del mandato</p>
+                            </div>
+        
+                            <div id = "electionstats" class="flex flex-col justify-end flex-wrap flex-none mr-10 mb-3">
+            
+                                
+                                <p id="lastEle", class="font-semibold mt-2 text-sm text-gray-500">Stato</p>
+                                <p id="lastEleReason"class="font-semibold mt-2 text-sm text-gray-500">Stato</p>
+                                <p id="timeoutPrim"class="font-semibold mt-2 text-sm text-gray-500">Stato</p>
+                                <p id="numOpPrim", class="font-semibold mt-2 text-sm text-gray-500">Stato</p>
+                                <p id="startPrim", class="font-semibold mt-2 text-sm text-gray-500">Stato</p>
+                            </div>
+        
+                        </div>
+                    </div>
+
             </div> 
         </section>
     </div>
@@ -212,6 +248,8 @@
                     $("#nodeBstats").hide()
                     $("#nodeCstats").hide()
                 }
+
+                $("#elections").hide()
 
             }
             else
@@ -348,9 +386,48 @@
                 $("#nodeBstats").show()
                 $("#nodeCstats").show()
 
+                //Elezioni
+                
+                $("#lastEle")[0].innerHTML = data.electionCandidateMetrics.lastElectionDate
+                $("#lastEleReason")[0].innerHTML = data.electionCandidateMetrics.lastElectionReason
+                $("#timeoutPrim")[0].innerHTML = data.electionCandidateMetrics.electionTimeoutMillis
+                $("#numOpPrim")[0].innerHTML = data.electionCandidateMetrics.numCatchUpOps
+                $("#startPrim")[0].innerHTML = data.electionCandidateMetrics.newTermStartDate
+                if($("#electionmsg1").length == 0) //Se non sono stati già creati
+                {
+                    addElectionMessages(data)
+                }
 
+                $("#elections").show()
 
             }
+        }
+
+        function addElectionMessages(data)
+        {
+            majNumVotes = data.majorityVoteCount
+            majNumVotesWrite = data.writeMajorityCount
+            numVotes = data.votingMembersCount
+            numVotesWrite = data.writableVotingMembersCount
+
+            msg1 = "Votano nelle elezioni " + numVotes + " nodi, la maggioranza si ottiene con " + majNumVotes + " voti."
+            msg2 = "Votano per la scrittura " + numVotesWrite + " nodi, la maggioranza si ottiene con " + majNumVotesWrite + " voti."
+
+            para1 = document.createElement("p")
+            para2 = document.createElement("p")
+            
+            $(para1).attr('id', 'electionmsg1');
+            $(para2).attr('id', 'electionmsg2');
+
+
+            $(para1).addClass("mt-2 ml-3 text-sm")
+            $(para2).addClass("mt-1 ml-3 text-sm")
+
+            para1.appendChild(document.createTextNode(msg1))
+            para2.appendChild(document.createTextNode(msg2))
+
+            document.getElementById("electionsmessages").appendChild(para1)
+            document.getElementById("electionsmessages").appendChild(para2)
         }
 
         $(document).ready(function(){
