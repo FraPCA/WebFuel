@@ -9,9 +9,7 @@
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='tailwind-output.css') }}"/> -->
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js" integrity="sha256-xKeoJ50pzbUGkpQxDYHD7o7hxe0LaOGeguUidbq6vis=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
     </script>
@@ -40,16 +38,6 @@
                         <li class="mr-3 flex-1">
                             <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-purple-500">
                                 <i class="fa fa-envelope pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Cluster</span>
-                            </a>
-                        </li>
-                        <li class="mr-3 flex-1">
-                            <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-blue-600">
-                                <i class="fas fa-chart-area pr-0 md:pr-3 text-blue-600"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-white md:text-white block md:inline-block">Database</span>
-                            </a>
-                        </li>
-                        <li class="mr-3 flex-1">
-                            <a href="#" class="block py-1 md:py-3 pl-0 md:pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-red-500">
-                                <i class="fa fa-wallet pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">Query</span>
                             </a>
                         </li>
                     </ul>
@@ -183,11 +171,11 @@
 
     <script>
 
-        function updateVisuals(data)
+        function updateVisuals(data)    //Aggiorna la grafica della pagina (icone,testo), chiamata da socket.on(update)
         {
             if(data.hasOwnProperty("nodeA"))    //status di errore
             {
-                switch(data.nodeA)
+                switch(data.nodeA)  //Aggiorna icona nodo A
                 {
                     case "offline":
                         $("#nodeA")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
@@ -205,7 +193,7 @@
                         break;
                 }
 
-                switch(data.nodeB)
+                switch(data.nodeB) //Aggiorna icona nodo B
                 {
                     case "offline":
                         $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
@@ -223,7 +211,7 @@
                         break;
                 }
 
-                switch(data.nodeC)
+                switch(data.nodeC) //Aggiorna icona nodo C
                 {
                     case "offline":
                         $("#nodeC")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}" 
@@ -249,7 +237,7 @@
                     $("#nodeCstats").hide()
                 }
 
-                $("#elections").hide()
+                $("#elections").hide()  
 
             }
             else
@@ -261,7 +249,7 @@
 
                 var primary;
 
-                if(data.members[0].health == 1)
+                if(data.members[0].health == 1) //Aggiorna icona nodo A
                 {
                     if(data.members[0].syncSourceHost == "")
                     {
@@ -285,7 +273,7 @@
                     }
                 }
                 
-                if(data.members[1].health == 1)
+                if(data.members[1].health == 1) //Aggiorna icona nodo B
                 {
                     if(data.members[1].syncSourceHost == "")
                     {
@@ -309,7 +297,7 @@
                         $("#nodeB")[0].src = "{{ url_for('static', filename='nodeunreachable.png') }}"
                     }
                 }
-                if(data.members[2].health == 1)
+                if(data.members[2].health == 1) //Aggiorna icona nodo C
                 {
                     if(data.members[2].syncSourceHost == "")
                     {
@@ -338,7 +326,7 @@
 
                 if(primary != "A")
                 {
-                    $("#latenzaA")[0].innerHTML = data.members[0].latency
+                    $("#latenzaA")[0].innerHTML = data.members[0].latency   //Se primario, ha latenza pari a 0, status la omette.
                 }
                 else
                 {
@@ -461,6 +449,8 @@
                     }
                 }
                 
+                //Aggiorna informazioni di tempo
+
                 $("#uptimeA")[0].innerHTML = data.members[0].uptime
                 $("#uptimeB")[0].innerHTML = data.members[1].uptime
                 $("#uptimeC")[0].innerHTML = data.members[2].uptime
@@ -476,6 +466,9 @@
                 $("#lastJouA")[0].innerHTML = data.members[0].lastDurableWallTime
                 $("#lastJouB")[0].innerHTML = data.members[1].lastDurableWallTime
                 $("#lastJouC")[0].innerHTML = data.members[2].lastDurableWallTime
+
+
+                //Mostra informazioni sui nodi
 
                 $("#legendstats").removeClass("invisible")
                 $("#nodeAstats").show()
@@ -499,7 +492,7 @@
             }
         }
 
-        function addElectionMessages(data)
+        function addElectionMessages(data) //Crea dinamicamente il testo che informa sul numero di nodi votanti e sulla maggioranza necessaria
         {
             majNumVotes = data.majorityVoteCount
             majNumVotesWrite = data.writeMajorityCount
@@ -528,21 +521,21 @@
 
         $(document).ready(function(){
         })
-        $(window).on('load', function(){
+        $(window).on('load', function(){        //Fa partire timer richieste solo dopo aver caricato la pagina
             $('#main').show()
             var intervalId = window.setInterval(function(){
                 socket.emit('updateRequest', {"data": ""})
             }, 5000); //Aggiorna lo status ogni 5 secondi
         })
 
-        var socket = io();
+        var socket = io();  //Inizializza socket ed invia prima richesta
         socket.emit('updateRequest', {"data": ""})
     
         socket.on('update', function(data){
             console.log("Ricevuto update")
             console.log(data)
             console.log(data['update'])
-            //$("#status")[0].innerHTML = JSON.stringify(data)
+            //$("#status")[0].innerHTML = JSON.stringify(data)  MOSTRA STATUS CRUDO
           updateVisuals(data)
         })
       </script>

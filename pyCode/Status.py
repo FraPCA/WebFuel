@@ -5,7 +5,7 @@ from datetime import datetime
 db = conn['admin']
 
 
-def cleanFail(error):
+def cleanFail(error):   #Formatta per bene il messaggio di errore, se non c'è connessione al DB.
     errorList = error.args[0].split(',')
     if('"Primary()"' in errorList[0]):    #Almeno un nodo attivo, cambia il messaggio di errore.
         pos1 = 5
@@ -66,7 +66,7 @@ def cleanFail(error):
     return status
     
 
-def update():
+def update():   #Chiede aggiornamento alla connessione con il DB, lo ripulisce e lo restituisce gestendo errori.
     try:
         rs_status = db.command({'replSetGetStatus': 1})
         clean(rs_status)
@@ -74,7 +74,7 @@ def update():
     except errors.ServerSelectionTimeoutError as error:
         return cleanFail(error)
         
-def clean(status):
+def clean(status):  #Cleaning del messaggio ricevuto da replSetGetStatus, lo restituisce.
     del status['myState']
     del status.get('optimes').get('lastCommittedOpTime')["t"]
     status.get("optimes")["lastCommittedOpTime"] = status.get("optimes").get("lastCommittedOpTime")["ts"].as_datetime().strftime("%d/%m/%Y, %H:%M:%S.%f")[:-3]
